@@ -53,6 +53,20 @@
   .seg button[aria-pressed="true"]{background:var(--blue-600);border-color:var(--blue-600);color:#fff;}
   .enc{margin-top:13px;font-size:13px;color:var(--steel-500);}
   .enc b{color:var(--navy-900);}
+  details.equipes{margin-top:13px;border:1.5px solid var(--steel-200);border-radius:10px;background:#fff;overflow:hidden;}
+  details.equipes summary{display:flex;justify-content:space-between;align-items:center;gap:10px;
+    padding:11px 12px;cursor:pointer;list-style:none;font-size:13px;}
+  details.equipes summary::-webkit-details-marker{display:none;}
+  details.equipes summary .lbl{margin:0;}
+  details.equipes summary b{font-weight:600;color:var(--navy-900);font-size:12.5px;text-align:right;}
+  details.equipes summary:after{content:'\25BC';font-size:9px;color:var(--steel-300);flex:none;}
+  details.equipes[open] summary:after{content:'\25B2';}
+  .eq-chips{display:flex;flex-wrap:wrap;gap:5px;padding:0 12px 10px;border-top:1px solid var(--line);padding-top:11px;}
+  .eq-acoes{display:flex;gap:7px;padding:0 12px 12px;}
+  .eq-acoes button{flex:1;border:1.5px solid var(--steel-200);background:#fff;border-radius:9px;padding:8px;
+    font-family:'Inter',sans-serif;font-weight:600;font-size:12px;color:var(--navy-900);cursor:pointer;}
+  .vazio{margin:26px 0;padding:20px;border:1.5px dashed var(--steel-200);border-radius:12px;
+    text-align:center;font-size:13.5px;color:var(--steel-500);}
 
   /* ---------- Resumo fixo ---------- */
   .summary{position:sticky;top:0;z-index:20;display:flex;gap:7px;padding:10px 18px;
@@ -187,6 +201,14 @@
       </div>
     </div>
     <div class="enc">Encarregado: <b id="encNome">—</b></div>
+    <details class="equipes" id="equipesBox">
+      <summary><span class="lbl">Equipes do informe</span><b id="eqResumo">Todas</b></summary>
+      <div class="eq-chips" id="eqChips"></div>
+      <div class="eq-acoes">
+        <button type="button" id="eqTodas">Selecionar todas</button>
+        <button type="button" id="eqNenhuma">Limpar seleção</button>
+      </div>
+    </details>
   </section>
 
   <div class="summary" id="summary"></div>
@@ -241,7 +263,7 @@
     no:['Falta injustificada','Atestado','Falta justificada'],
     mid:['Férias','Folga','Treinamento','Afastamento','Remanejado para outra letra','Remanejado para outra equipe']
   };
-  var estado = {letra:'A', data:'', turno:'T1', formato:'completo', marcas:{}, obsGerais:''};
+  var estado = {letra:'A', data:'', turno:'T1', formato:'completo', marcas:{}, obsGerais:'', filtro:null};
 
   var $ = function(id){ return document.getElementById(id); };
   function hoje(){ var d=new Date(); d.setMinutes(d.getMinutes()-d.getTimezoneOffset()); return d.toISOString().slice(0,10); }
@@ -253,6 +275,56 @@
   }
   function chaveArmazenamento(){ return 'informe-equipe:'+estado.letra+':'+estado.data+':'+estado.turno; }
   function idPessoa(g,p){ return g+'|'+p; }
+
+  /* ---------- Equipes incluídas no informe ---------- */
+  function gruposDaLetra(){ return ((BASE.letras[estado.letra]||{}).grupos)||[]; }
+  function gruposVisiveis(){
+    var f=estado.filtro;
+    return gruposDaLetra().filter(function(g){ return !f || f.indexOf(g.nome)>=0; });
+  }
+  function chaveFiltro(){ return 'informe-equipe:filtro:'+estado.letra; }
+  function carregarFiltro(){
+    estado.filtro=null;
+    try{
+      var raw=localStorage.getItem(chaveFiltro());
+      if(raw){
+        var f=JSON.parse(raw);
+        if(Array.isArray(f)){
+          var nomes=gruposDaLetra().map(function(g){ return g.nome; });
+          f=f.filter(function(n){ return nomes.indexOf(n)>=0; });
+          if(f.length<nomes.length) estado.filtro=f;
+        }
+      }
+    }catch(e){}
+  }
+  function salvarFiltro(){
+    try{
+      if(estado.filtro) localStorage.setItem(chaveFiltro(), JSON.stringify(estado.filtro));
+      else localStorage.removeItem(chaveFiltro());
+    }catch(e){}
+  }
+  function montarFiltro(){
+    var todos=gruposDaLetra(), box=$('eqChips');
+    box.innerHTML='';
+    todos.forEach(function(g){
+      var sel=!estado.filtro || estado.filtro.indexOf(g.nome)>=0;
+      var b=document.createElement('button');
+      b.type='button'; b.className='motivo'; b.textContent=g.nome;
+      b.setAttribute('aria-pressed', String(sel));
+      b.onclick=function(){
+        var atual = estado.filtro ? estado.filtro.slice() : todos.map(function(x){ return x.nome; });
+        var i=atual.indexOf(g.nome);
+        if(i>=0) atual.splice(i,1); else atual.push(g.nome);
+        estado.filtro = (atual.length===todos.length) ? null : atual;
+        salvarFiltro(); montarFiltro(); montarLista();
+      };
+      box.appendChild(b);
+    });
+    var vis=gruposVisiveis();
+    $('eqResumo').textContent = !estado.filtro ? 'Todas ('+todos.length+')'
+      : (vis.length===0 ? 'Nenhuma selecionada'
+      : (vis.length===1 ? vis[0].nome : vis.length+' de '+todos.length));
+  }
 
   /* ---------- Persistência local ---------- */
   function salvar(){
@@ -277,7 +349,7 @@
       b.type='button'; b.className='letra'; b.dataset.l=L;
       b.setAttribute('aria-pressed', String(L===estado.letra));
       b.innerHTML=L+'<small>'+n+' pessoas</small>';
-      b.onclick=function(){ estado.letra=L; carregar(); montarLetras(); montarLista(); };
+      b.onclick=function(){ estado.letra=L; carregarFiltro(); carregar(); montarLetras(); montarFiltro(); montarLista(); };
       box.appendChild(b);
     });
     $('encNome').textContent=(BASE.letras[estado.letra]||{}).encarregado||'—';
@@ -286,8 +358,12 @@
 
   function montarLista(){
     var lista=$('lista'); lista.innerHTML='';
-    var eq=BASE.letras[estado.letra]||{grupos:[]};
-    eq.grupos.forEach(function(g){
+    var vis=gruposVisiveis();
+    if(!vis.length){
+      lista.innerHTML='<p class="vazio">Nenhuma equipe selecionada. Abra "Equipes do informe" acima e escolha pelo menos uma.</p>';
+      atualizarResumo(); return;
+    }
+    vis.forEach(function(g){
       var sec=document.createElement('section'); sec.className='grupo';
       var h=document.createElement('h2');
       h.innerHTML=g.nome+'<span>'+g.pessoas.length+'</span>';
@@ -371,8 +447,8 @@
 
   /* ---------- Contagens ---------- */
   function pessoas(){
-    var eq=BASE.letras[estado.letra]||{grupos:[]}, out=[];
-    eq.grupos.forEach(function(g){ g.pessoas.forEach(function(p){ out.push({grupo:g.nome,p:p,id:idPessoa(g.nome,p.nome)}); }); });
+    var out=[];
+    gruposVisiveis().forEach(function(g){ g.pessoas.forEach(function(p){ out.push({grupo:g.nome,p:p,id:idPessoa(g.nome,p.nome)}); }); });
     return out;
   }
   function contar(){
@@ -399,16 +475,19 @@
   function montarTexto(){
     var c=contar();
     var enc=(BASE.letras[estado.letra]||{}).encarregado||'';
+    var vis=gruposVisiveis(), todos=gruposDaLetra();
+    var parcial = vis.length>0 && vis.length<todos.length;
+    var temLideranca = vis.some(function(g){ return g.nome==='Liderança'; });
     var L=[];
     L.push('*INFORME DE EQUIPE \u2014 LETRA '+estado.letra+'*');
+    if(parcial) L.push((vis.length===1?'Equipe: ':'Equipes: ')+vis.map(function(g){ return g.nome; }).join(', '));
     L.push(dataBR(estado.data)+' ('+diaSemana(estado.data)+') \u00B7 Turno '+estado.turno);
-    if(enc) L.push('Encarregado: '+enc);
+    if(enc && (!parcial || temLideranca)) L.push('Encarregado: '+enc);
     L.push('');
     L.push('Efetivo *'+c.total+'* \u00B7 '+EMOJI.ok+' Trabalhou *'+c.ok+'* \u00B7 '+EMOJI.no+' Faltou *'+c.no+'*'+(c.mid?' \u00B7 '+EMOJI.mid+' Outros *'+c.mid+'*':''));
 
     if(estado.formato==='completo'){
-      var eq=BASE.letras[estado.letra]||{grupos:[]};
-      eq.grupos.forEach(function(g){
+      vis.forEach(function(g){
         L.push('');
         L.push('*'+g.nome.toUpperCase()+'*');
         g.pessoas.forEach(function(p){
@@ -439,6 +518,7 @@
     clearTimeout(toast._id); toast._id=setTimeout(function(){ t.classList.remove('show'); },2600);
   }
   function validar(){
+    if(!gruposVisiveis().length){ toast('Selecione pelo menos uma equipe em "Equipes do informe".'); return false; }
     var c=contar();
     if(c.pend===0) return true;
     var primeiro=null;
@@ -507,7 +587,7 @@
         if(!seed.categories) throw new Error('formato');
         BASE=converterPainel(seed);
         document.getElementById('base-equipes').textContent=JSON.stringify(BASE);
-        carregar(); montarLetras(); montarLista();
+        carregarFiltro(); carregar(); montarLetras(); montarFiltro(); montarLista();
         $('manutStatus').textContent='Equipe atualizada (semana '+(BASE.referencia||'—')+'). Agora baixe o HTML atualizado.';
       }catch(err){
         $('manutStatus').style.color='#DC2626';
@@ -519,7 +599,7 @@
   function baixarHTML(){
     var clone=document.documentElement.cloneNode(true);
     clone.querySelector('#base-equipes').textContent=JSON.stringify(BASE);
-    ['#lista','#summary','#letras','#previa','#manutStatus','#toast'].forEach(function(sel){
+    ['#lista','#summary','#letras','#previa','#manutStatus','#toast','#eqChips'].forEach(function(sel){
       var el=clone.querySelector(sel); if(el) el.innerHTML='';
     });
     var og=clone.querySelector('#obsGerais'); if(og) og.textContent='';
@@ -534,7 +614,10 @@
   function iniciar(){
     estado.data=hoje();
     $('data').value=estado.data;
-    carregar(); montarLetras(); montarLista();
+    carregarFiltro(); carregar(); montarLetras(); montarFiltro(); montarLista();
+
+    $('eqTodas').onclick=function(){ estado.filtro=null; salvarFiltro(); montarFiltro(); montarLista(); };
+    $('eqNenhuma').onclick=function(){ estado.filtro=[]; salvarFiltro(); montarFiltro(); montarLista(); };
 
     $('data').onchange=function(){ estado.data=$('data').value||hoje(); carregar(); montarLista(); };
     Array.prototype.forEach.call($('turno').children,function(b){
