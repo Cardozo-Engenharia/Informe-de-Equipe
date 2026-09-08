@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Informe de Equipe — Cardozo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --navy-900:#0B1F3A; --navy-700:#12315C; --blue-600:#1551A7; --blue-500:#2C6FD1;
@@ -94,6 +94,8 @@
     text-transform:uppercase;color:var(--navy-700);margin:0 0 9px;padding-bottom:6px;
     border-bottom:2px solid var(--line);display:flex;justify-content:space-between;align-items:center;}
   .grupo h2 span{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--steel-300);letter-spacing:0;}
+  .grupo h2 em{font-family:'Inter',sans-serif;font-style:normal;font-size:9.5px;font-weight:600;
+    letter-spacing:.06em;background:#E4EDFB;color:var(--blue-600);padding:2px 6px;border-radius:4px;margin-left:7px;}
 
   .pessoa{border:1px solid var(--line);border-radius:12px;padding:11px 12px;margin-bottom:9px;background:#fff;
     border-left:4px solid var(--steel-200);transition:border-color .15s,background .15s;}
@@ -261,14 +263,40 @@
 <script>
 (function(){
   "use strict";
-  var BASE = JSON.parse(document.getElementById('base-equipes').textContent);
   var LETRAS = ['A','B','C','D'];
+  var BASE = JSON.parse(document.getElementById('base-equipes').textContent);
   var EMOJI = {ok:'\u{1F7E2}', no:'\u{1F534}', mid:'\u{1F7E1}'};
   var MOTIVOS = {
     no:['Falta injustificada','Atestado','Falta justificada'],
     mid:['Férias','Folga','Treinamento','Afastamento','Remanejado para outra letra','Remanejado para outra equipe']
   };
   var estado = {letra:'A', data:'', turno:'T1', formato:'completo', marcas:{}, obsGerais:'', filtro:null};
+
+  /* Equipes com regra própria de turno/origem.
+     Alta Tensão atua somente no T1: a equipe da letra B cobre o T1 das letras A e B,
+     e a equipe da letra C cobre o T1 das letras C e D. */
+  var REGRAS = {
+    'Alta Tensão': { turnos:['T1'], origem:{A:'B', B:'B', C:'C', D:'C'} }
+  };
+  function aplicarRegras(b){
+    Object.keys(REGRAS).forEach(function(nome){
+      var reg=REGRAS[nome];
+      LETRAS.forEach(function(L){
+        var origem=(reg.origem&&reg.origem[L])||L;
+        var eqO=b.letras[origem], eqL=b.letras[L];
+        if(!eqO||!eqL) return;
+        var iO=-1;
+        eqO.grupos.forEach(function(g,i){ if(g.nome===nome) iO=i; });
+        var iL=-1;
+        eqL.grupos.forEach(function(g,i){ if(g.nome===nome) iL=i; });
+        if(iO<0){ if(iL>=0) eqL.grupos.splice(iL,1); return; }
+        var copia={nome:nome, pessoas:eqO.grupos[iO].pessoas, turnos:reg.turnos, origem:origem};
+        if(iL>=0) eqL.grupos[iL]=copia;
+        else eqL.grupos.splice(Math.min(iO,eqL.grupos.length),0,copia);
+      });
+    });
+    return b;
+  }
 
   var $ = function(id){ return document.getElementById(id); };
   function hoje(){ var d=new Date(); d.setMinutes(d.getMinutes()-d.getTimezoneOffset()); return d.toISOString().slice(0,10); }
@@ -290,7 +318,11 @@
   function ehPendente(p){ return !!p.pend || inicioFuturo(p); }
 
   /* ---------- Equipes incluídas no informe ---------- */
-  function gruposDaLetra(){ return ((BASE.letras[estado.letra]||{}).grupos)||[]; }
+  function gruposDe(L){
+    var gs=((BASE.letras[L]||{}).grupos)||[];
+    return gs.filter(function(g){ return !g.turnos || g.turnos.indexOf(estado.turno)>=0; });
+  }
+  function gruposDaLetra(){ return gruposDe(estado.letra); }
   function gruposVisiveis(){
     var f=estado.filtro;
     return gruposDaLetra().filter(function(g){ return !f || f.indexOf(g.nome)>=0; });
@@ -356,8 +388,7 @@
   function montarLetras(){
     var box=$('letras'); box.innerHTML='';
     LETRAS.forEach(function(L){
-      var eq=BASE.letras[L]||{grupos:[]};
-      var n=(eq.grupos||[]).reduce(function(s,g){
+      var n=gruposDe(L).reduce(function(s,g){
         return s+g.pessoas.filter(function(p){ return !ehPendente(p); }).length;
       },0);
       var b=document.createElement('button');
@@ -381,7 +412,7 @@
     vis.forEach(function(g){
       var sec=document.createElement('section'); sec.className='grupo';
       var h=document.createElement('h2');
-      h.innerHTML=g.nome+'<span>'+g.pessoas.length+'</span>';
+      h.innerHTML=g.nome+(g.turnos?'<em>Somente '+g.turnos.join('/')+'</em>':'')+'<span>'+g.pessoas.length+'</span>';
       sec.appendChild(h);
       g.pessoas.forEach(function(p){ sec.appendChild(cardPessoa(g.nome,p)); });
       lista.appendChild(sec);
@@ -656,7 +687,7 @@
           seed=JSON.parse(m[1]);
         }
         if(!seed.categories) throw new Error('formato');
-        BASE=converterPainel(seed);
+        BASE=aplicarRegras(converterPainel(seed));
         document.getElementById('base-equipes').textContent=JSON.stringify(BASE);
         carregarFiltro(); carregar(); montarLetras(); montarFiltro(); montarLista();
         $('manutStatus').textContent='Equipe atualizada (semana '+(BASE.referencia||'—')+'). Agora baixe o HTML atualizado.';
@@ -686,6 +717,7 @@
 
   /* ---------- Ligações ---------- */
   function iniciar(){
+    aplicarRegras(BASE);
     estado.data=hoje();
     $('data').value=estado.data;
     carregarFiltro(); carregar(); montarLetras(); montarFiltro(); montarLista();
@@ -698,7 +730,7 @@
       b.onclick=function(){
         estado.turno=b.dataset.t;
         Array.prototype.forEach.call($('turno').children,function(x){ x.setAttribute('aria-pressed', String(x===b)); });
-        carregar(); montarLista();
+        carregarFiltro(); carregar(); montarLetras(); montarFiltro(); montarLista();
       };
     });
     Array.prototype.forEach.call($('formato').children,function(b){
@@ -734,5 +766,4 @@
   iniciar();
 })();
 </script>
-
 </body></html>
