@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Informe de Equipe — Cardozo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --navy-900:#0B1F3A; --navy-700:#12315C; --blue-600:#1551A7; --blue-500:#2C6FD1;
@@ -51,6 +51,9 @@
   .seg button{height:42px;border:1.5px solid var(--steel-200);background:#fff;border-radius:10px;padding:0;
     font-family:'Inter',sans-serif;font-weight:600;font-size:13.5px;color:var(--steel-500);cursor:pointer;}
   .seg button[aria-pressed="true"]{background:var(--blue-600);border-color:var(--blue-600);color:#fff;}
+  .dica{display:none;margin:9px 0 0;padding:8px 10px;border-radius:8px;background:#E4EDFB;
+    font-size:11.5px;line-height:1.35;color:var(--blue-600);}
+  .dica.show{display:block;}
   .enc{margin-top:13px;font-size:13px;color:var(--steel-500);}
   .enc b{color:var(--navy-900);}
   details.equipes{margin-top:13px;border:1.5px solid var(--steel-200);border-radius:10px;background:#fff;overflow:hidden;}
@@ -207,6 +210,7 @@
         </div>
       </div>
     </div>
+    <p class="dica" id="dicaTurno"></p>
     <div class="enc">Encarregado: <b id="encNome">—</b></div>
     <details class="equipes" id="equipesBox">
       <summary><span class="lbl">Equipes do informe</span><b id="eqResumo">Todas</b></summary>
@@ -259,7 +263,7 @@
 </div></div>
 <div class="toast" id="toast"></div>
 
-<script id="base-equipes" type="application/json">{"referencia":"21/08 - 30/08","origem":"2026-09-09T17:40:24.332Z","letras":{"A":{"encarregado":"Bernardo Sena","grupos":[{"nome":"Liderança","pessoas":[{"nome":"Bernardo Sena","funcao":"Encarregado","key":"Bernardo Sena"}]},{"nome":"Automação","pessoas":[{"nome":"Pedro Henrique","funcao":"Eletricista","eq":"VL CDZ-027","otj":true,"key":"Pedro Henrique"},{"nome":"Thomás Aurélio","funcao":"Eletricista","key":"Thomás Aurélio"}]},{"nome":"Projeto Flexibilidade","pessoas":[{"nome":"Éder Custódio","funcao":"Operador","eq":"JCB MT-01","key":"Éder Custódio"},{"nome":"Wesley Romualdo","funcao":"Eletro mecânico","eq":"VL CDZ-17","key":"Wesley Romualdo"},{"nome":"Glaycon Fernando","funcao":"Eletro mecânico","key":"Glaycon Fernando"}]},{"nome":"VL Logística","pessoas":[{"nome":"Hugo Vinícius","funcao":"Operador VL","otj":true,"key":"Hugo Vinícius"}]},{"nome":"Equipagem BPF-PLANO","pessoas":[{"nome":"Deivisson Marcks","funcao":"Eletricista","eq":"VL CDZ-25","key":"Deivisson Marcks"},{"nome":"Douglas Patrick","funcao":"Auxiliar","eq":"VL CDZ-31","otj":true,"key":"Douglas Patrick"}]},{"nome":"Equipagem BPF-CRO","pessoas":[{"nome":"Caio Viana","funcao":"Eletricista","otj":true,"key":"Caio Viana"},{"nome":"Igor Cipriano","funcao":"Auxiliar","otj":true,"key":"Igor Cipriano"}]},{"nome":"Equipagem Corretiva - 01","pessoas":[{"nome":"Augusto Franco","funcao":"Auxiliar","otj":true,"key":"Augusto Franco"}]},{"nome":"Equipagem Corretiva - 02","pessoas":[{"nome":"Alexandre Reis","funcao":"Auxiliar","key":"Alexandre Reis"}]},{"nome":"Manutenção Planejada","pessoas":[{"nome":"Lucas Saleme","funcao":"Eletricista","key":"Lucas Saleme"},{"nome":"Breno Abel","funcao":"Auxiliar","key":"Breno Abel"}]},{"nome":"Manutenção de Painéis","pessoas":[{"nome":"João Wellington","funcao":"Eletricista","key":"João Wellington"}]},{"nome":"Caldeiraria","pessoas":[{"nome":"Ricardo Rodrigues","funcao":"Operador","eq":"JCB MT CDZ-022","key":"Ricardo Rodrigues"},{"nome":"Warlley Serafim","funcao":"Soldador","key":"Warlley Serafim"},{"nome":"Anderson Ramos","funcao":"Soldador","otj":true,"key":"Anderson Ramos"},{"nome":"Willer Aleme","funcao":"Auxiliar","eq":"VL CDZ-14","key":"Willer Aleme"},{"nome":"Weverton Johnny","funcao":"Auxiliar","key":"Weverton Johnny"},{"nome":"Italo Carrion","funcao":"Auxiliar","key":"Italo Carrion"}]},{"nome":"Munck","pessoas":[{"nome":"Caique Phelype","funcao":"Auxiliar","key":"Caique Phelype"}]},{"nome":"Obras de Infraestrutura","pessoas":[{"nome":"Jeferson Henrique","funcao":"Operador de equipamentos","eq":"JCB MT CDZ-034","otj":true,"key":"Jeferson Henrique"}]},{"nome":"Alta Tensão","pessoas":[{"nome":"Narmillen Chanietto","funcao":"Técnico","key":"Narmillen Chanietto"},{"nome":"Rodrigo Silva","funcao":"Técnico","key":"Rodrigo Silva"},{"nome":"Gabriel Vinicius","funcao":"Eletricista","key":"Gabriel Vinicius"},{"nome":"Marco Aurélio","funcao":"Eletricista","eq":"VL CDZ-24","key":"Marco Aurélio"},{"nome":"Jeferson Braian","funcao":"Eletricista","eq":"VL CDZ-29","inicio":"07/09","motivo":"Em mobilização, previsão de início 07/09","key":"Jeferson Braian"},{"nome":"Luiz Gustavo","funcao":"Eletricista","eq":"VL CDZ-023","key":"Luiz Gustavo"}],"turnos":["T1"],"origem":"B"},{"nome":"TST","pessoas":[{"nome":"Ana Paula","funcao":"Téc. de Seg.","key":"Ana Paula"}]},{"nome":"Apoio Operacional","pessoas":[{"nome":"Carlos Eduardo","funcao":"Eletricista","inicio":"25/09","motivo":"Em mobilização, previsão de início 25/09","pend":true,"key":"Carlos Eduardo"},{"nome":"Huitalon Vitorio","funcao":"Auxiliar","motivo":"Em mobilização","pend":true,"key":"Huitalon Vitorio"}]}]},"B":{"encarregado":"Leonardo Coutinho","grupos":[{"nome":"Liderança","pessoas":[{"nome":"Leonardo Coutinho","funcao":"Encarregado","key":"Leonardo Coutinho"}]},{"nome":"Automação","pessoas":[{"nome":"Gabriel Melo","funcao":"Eletricista","eq":"VL CDZ-027","key":"Gabriel Melo"},{"nome":"Gilmar Rodrigues","funcao":"Eletricista","key":"Gilmar Rodrigues"}]},{"nome":"Projeto Flexibilidade","pessoas":[{"nome":"Arley Santos","funcao":"Operador","eq":"JCB MT-01","key":"Arley Santos"},{"nome":"João Vitor","funcao":"Eletro mecânico","eq":"VL CDZ-17","key":"João Vitor"},{"nome":"Luiz Fernando","funcao":"Eletro mecânico","key":"Luiz Fernando"}]},{"nome":"VL Logística","pessoas":[{"nome":"Ângelo Bruno","funcao":"Operador VL","inicio":"15/09","motivo":"Em mobilização, previsão de início 15/09","pend":true,"key":"Ângelo Bruno"}]},{"nome":"Equipagem BPF-PLANO","pessoas":[{"nome":"Jorge Neves","funcao":"Eletricista","eq":"VL CDZ-25","key":"Jorge Neves"},{"nome":"Charles Santos","funcao":"Auxiliar","eq":"VL CDZ-31","key":"Charles Santos"}]},{"nome":"Equipagem BPF-CRO","pessoas":[{"nome":"João Lucas","funcao":"Eletricista","key":"João Lucas"},{"nome":"Luiz Augusto","funcao":"Auxiliar","otj":true,"key":"Luiz Augusto"}]},{"nome":"Equipagem Corretiva - 01","pessoas":[{"nome":"Fernando Custódio","funcao":"Auxiliar","otj":true,"key":"Fernando Custódio"}]},{"nome":"Equipagem Corretiva - 02","pessoas":[{"nome":"Philipe Augusto","funcao":"Auxiliar","otj":true,"key":"Philipe Augusto"}]},{"nome":"Manutenção Planejada","pessoas":[{"nome":"Junio Afonso","funcao":"Eletricista","key":"Junio Afonso"},{"nome":"Dário Junior","funcao":"Auxiliar","key":"Dário Junior"}]},{"nome":"Manutenção de Painéis","pessoas":[{"nome":"Anthony Omar","funcao":"Eletricista","key":"Anthony Omar"}]},{"nome":"Caldeiraria","pessoas":[{"nome":"Frederico","funcao":"Operador","eq":"JCB MT CDZ-022","key":"Frederico"},{"nome":"Brayan Dias","funcao":"Soldador","motivo":"Período de Férias - 03/09 á 02/10 Sem Reposição","pend":true,"key":"Brayan Dias"},{"nome":"Marcelo Maciel","funcao":"Soldador","otj":true,"key":"Marcelo Maciel"},{"nome":"Carlos Daniel","funcao":"Auxiliar","eq":"VL CDZ-14","otj":true,"key":"Carlos Daniel"},{"nome":"Wesley Meyer","funcao":"Auxiliar","key":"Wesley Meyer"},{"nome":"Weverton Johnny","funcao":"Auxiliar","key":"Weverton Johnny"}]},{"nome":"Munck","pessoas":[{"nome":"Luciano Paulo","funcao":"Auxiliar","key":"Luciano Paulo"}]},{"nome":"Obras de Infraestrutura","pessoas":[{"nome":"Wanderson Celeste","funcao":"Operador de equipamentos","eq":"JCB MT CDZ-034","otj":true,"key":"Wanderson Celeste"}]},{"nome":"Alta Tensão","pessoas":[{"nome":"Narmillen Chanietto","funcao":"Técnico","key":"Narmillen Chanietto"},{"nome":"Rodrigo Silva","funcao":"Técnico","key":"Rodrigo Silva"},{"nome":"Gabriel Vinicius","funcao":"Eletricista","key":"Gabriel Vinicius"},{"nome":"Marco Aurélio","funcao":"Eletricista","eq":"VL CDZ-24","key":"Marco Aurélio"},{"nome":"Jeferson Braian","funcao":"Eletricista","eq":"VL CDZ-29","inicio":"07/09","motivo":"Em mobilização, previsão de início 07/09","key":"Jeferson Braian"},{"nome":"Luiz Gustavo","funcao":"Eletricista","eq":"VL CDZ-023","key":"Luiz Gustavo"}],"turnos":["T1"],"origem":"B"},{"nome":"TST","pessoas":[{"nome":"","funcao":"Téc. de Seg.","motivo":"Em contratação","pend":true,"key":"Pendente #1"}]},{"nome":"Apoio Operacional","pessoas":[{"nome":"Wander Lúcio","funcao":"Eletricista","inicio":"23/09","motivo":"Em mobilização, previsão de início 23/09","pend":true,"key":"Wander Lúcio"},{"nome":"","funcao":"Auxiliar","motivo":"A contratar","pend":true,"key":"Pendente #2"}]}]},"C":{"encarregado":"Weviley Borges","grupos":[{"nome":"Liderança","pessoas":[{"nome":"Weviley Borges","funcao":"Encarregado","key":"Weviley Borges"}]},{"nome":"Automação","pessoas":[{"nome":"Raquel Lino","funcao":"Eletricista","eq":"VL CDZ-027","key":"Raquel Lino"},{"nome":"Wesley Monteiro","funcao":"Eletricista","inicio":"05/09","motivo":"Em mobilização, previsão de início 05/09","key":"Wesley Monteiro"}]},{"nome":"Projeto Flexibilidade","pessoas":[{"nome":"Josevaldo Silva","funcao":"Operador","eq":"JCB MT-01","key":"Josevaldo Silva"},{"nome":"Carlos Junior","funcao":"Eletro mecânico","eq":"VL CDZ-17","key":"Carlos Junior"},{"nome":"Diogo da Mota","funcao":"Eletro mecânico","key":"Diogo da Mota"}]},{"nome":"VL Logística","pessoas":[{"nome":"Alexandre Vitoriano","funcao":"Operador VL","inicio":"19/09","motivo":"Em mobilização, previsão de início 19/09","pend":true,"key":"Alexandre Vitoriano"}]},{"nome":"Equipagem BPF-PLANO","pessoas":[{"nome":"Renan Henrique","funcao":"Eletricista","key":"Renan Henrique"},{"nome":"Alexandre Vitoriano","funcao":"Auxiliar","eq":"VL CDZ-31","key":"Alexandre Vitoriano"}]},{"nome":"Equipagem BPF-CRO","pessoas":[{"nome":"Washington Santos","funcao":"Eletricista","key":"Washington Santos"},{"nome":"Matheus Vitor","funcao":"Auxiliar","otj":true,"key":"Matheus Vitor"}]},{"nome":"Equipagem Corretiva - 01","pessoas":[{"nome":"João Vitor Santos","funcao":"Auxiliar","otj":true,"key":"João Vitor Santos"}]},{"nome":"Equipagem Corretiva - 02","pessoas":[{"nome":"Cauã Phillipe","funcao":"Auxiliar","otj":true,"key":"Cauã Phillipe"}]},{"nome":"Manutenção Planejada","pessoas":[{"nome":"Gabriel Santiago","funcao":"Eletricista","key":"Gabriel Santiago"},{"nome":"Háviner Sena","funcao":"Auxiliar","otj":true,"key":"Háviner Sena"}]},{"nome":"Manutenção de Painéis","pessoas":[{"nome":"Fabrício Resende","funcao":"Eletricista","key":"Fabrício Resende"}]},{"nome":"Caldeiraria","pessoas":[{"nome":"Cleber Soares","funcao":"Operador","eq":"JCB MT CDZ-022","key":"Cleber Soares"},{"nome":"Aldivan Barbosa","funcao":"Soldador","key":"Aldivan Barbosa"},{"nome":"Adrian Muller","funcao":"Soldador","key":"Adrian Muller"},{"nome":"André Marcos","funcao":"Auxiliar","eq":"VL CDZ-14","otj":true,"key":"André Marcos"},{"nome":"Yago Chilaverth","funcao":"Auxiliar","otj":true,"key":"Yago Chilaverth"}]},{"nome":"Munck","pessoas":[{"nome":"Welington Dias","funcao":"Auxiliar","key":"Welington Dias"}]},{"nome":"Limpeza","pessoas":[{"nome":"Wellington Santos","funcao":"Auxiliar","key":"Wellington Santos"}]},{"nome":"Obras de Infraestrutura","pessoas":[{"nome":"Neymar Silva","funcao":"Operador de equipamentos","eq":"JCB MT CDZ-034","otj":true,"key":"Neymar Silva"}]},{"nome":"Alta Tensão","pessoas":[{"nome":"Wendrell Leone","funcao":"Técnico","key":"Wendrell Leone"},{"nome":"Lucas Otávio","funcao":"Eletricista","key":"Lucas Otávio"},{"nome":"Riclei Marques","funcao":"Eletricista","eq":"VL CDZ-023","key":"Riclei Marques"},{"nome":"Gabriel Teixeira","funcao":"Eletricista","eq":"VL CDZ-24","key":"Gabriel Teixeira"},{"nome":"Denis Brandão","funcao":"Eletricista","eq":"VL CDZ-29","key":"Denis Brandão"}],"turnos":["T1"],"origem":"C"},{"nome":"TST","pessoas":[{"nome":"","funcao":"Téc. de Seg.","inicio":"19/09","motivo":"Em mobilização, previsão de início 19/09","pend":true,"key":"Pendente #1"}]},{"nome":"Apoio Operacional","pessoas":[{"nome":"Presley Rosário","funcao":"Eletricista","motivo":"Em mobilização","pend":true,"key":"Presley Rosário"},{"nome":"Robert Gonçalves","funcao":"Auxiliar","otj":true,"inicio":"19/09","motivo":"Em mobilização, previsão de início 19/09","key":"Robert Gonçalves"}]}]},"D":{"encarregado":"Anderson Aparecido","grupos":[{"nome":"Liderança","pessoas":[{"nome":"Anderson Aparecido","funcao":"Encarregado","key":"Anderson Aparecido"}]},{"nome":"Automação","pessoas":[{"nome":"Rodrigo Antônio","funcao":"Eletricista","eq":"VL CDZ-027","key":"Rodrigo Antônio"},{"nome":"Voltaire Payoutte","funcao":"Eletricista","otj":true,"key":"Voltaire Payoutte"}]},{"nome":"Projeto Flexibilidade","pessoas":[{"nome":"Lourenço Junior","funcao":"Operador","eq":"JCB MT-01","key":"Lourenço Junior"},{"nome":"Wander Lúcio","funcao":"Eletro mecânico","eq":"VL CDZ-17","key":"Wander Lúcio"},{"nome":"Ricardo Guerra","funcao":"Eletro mecânico","key":"Ricardo Guerra"}]},{"nome":"VL Logística","pessoas":[{"nome":"Gabriel Augusto","funcao":"Operador VL","eq":"VL CDZ-25","otj":true,"key":"Gabriel Augusto"}]},{"nome":"Equipagem BPF-PLANO","pessoas":[{"nome":"Kevin Costner","funcao":"Eletricista","key":"Kevin Costner"},{"nome":"José Pereira","funcao":"Auxiliar","eq":"VL CDZ-31","key":"José Pereira"}]},{"nome":"Equipagem BPF-CRO","pessoas":[{"nome":"Junio Santos","funcao":"Eletricista","key":"Junio Santos"},{"nome":"Nathan Gustavo","funcao":"Auxiliar","otj":true,"key":"Nathan Gustavo"}]},{"nome":"Equipagem Corretiva - 01","pessoas":[{"nome":"Romeu Henrique","funcao":"Auxiliar","otj":true,"key":"Romeu Henrique"}]},{"nome":"Equipagem Corretiva - 02","pessoas":[{"nome":"Gustavo Henrique","funcao":"Auxiliar","otj":true,"key":"Gustavo Henrique"}]},{"nome":"Manutenção Planejada","pessoas":[{"nome":"Igor Henrique","funcao":"Eletricista","key":"Igor Henrique"},{"nome":"Wilson Junior","funcao":"Auxiliar","otj":true,"key":"Wilson Junior"}]},{"nome":"Manutenção de Painéis","pessoas":[{"nome":"Paulo Brandão","funcao":"Eletricista","key":"Paulo Brandão"}]},{"nome":"Caldeiraria","pessoas":[{"nome":"Deivy Marcos","funcao":"Operador","eq":"JCB MT CDZ-022","key":"Deivy Marcos"},{"nome":"Pedro de Deus","funcao":"Soldador","key":"Pedro de Deus"},{"nome":"Samuel Souza","funcao":"Soldador","eq":"VL CDZ-14","key":"Samuel Souza"},{"nome":"Pedro Cassimiro","funcao":"Auxiliar","key":"Pedro Cassimiro"},{"nome":"Thyago Augusto","funcao":"Auxiliar","key":"Thyago Augusto"}]},{"nome":"Munck","pessoas":[{"nome":"Junior Alex","funcao":"Auxiliar","key":"Junior Alex"}]},{"nome":"Limpeza","pessoas":[{"nome":"Michell Lopes","funcao":"Auxiliar","key":"Michell Lopes"}]},{"nome":"Obras de Infraestrutura","pessoas":[{"nome":"Leonardo Andrade","funcao":"Operador de equipamentos","eq":"JCB MT CDZ-034","otj":true,"key":"Leonardo Andrade"}]},{"nome":"Alta Tensão","pessoas":[{"nome":"Wendrell Leone","funcao":"Técnico","key":"Wendrell Leone"},{"nome":"Lucas Otávio","funcao":"Eletricista","key":"Lucas Otávio"},{"nome":"Riclei Marques","funcao":"Eletricista","eq":"VL CDZ-023","key":"Riclei Marques"},{"nome":"Gabriel Teixeira","funcao":"Eletricista","eq":"VL CDZ-24","key":"Gabriel Teixeira"},{"nome":"Denis Brandão","funcao":"Eletricista","eq":"VL CDZ-29","key":"Denis Brandão"}],"turnos":["T1"],"origem":"C"},{"nome":"TST","pessoas":[{"nome":"","funcao":"Téc. de Seg.","motivo":"Em contratação","pend":true,"key":"Pendente #1"}]},{"nome":"Apoio Operacional","pessoas":[{"nome":"Guilherme Lima","funcao":"Eletricista","key":"Guilherme Lima"},{"nome":"Italo Carrion","funcao":"Auxiliar","motivo":"Apenas dias 13 e 14/09","pend":true,"key":"Italo Carrion"}]}]}}}</script>
+<script id="base-equipes" type="application/json">{"referencia":"21/08 - 30/08","origem":"2026-09-10T14:02:38.498Z","letras":{"A":{"encarregado":"Bernardo Sena","grupos":[{"nome":"Liderança","pessoas":[{"nome":"Bernardo Sena","funcao":"Encarregado","key":"Bernardo Sena"}]},{"nome":"Automação","pessoas":[{"nome":"Pedro Henrique","funcao":"Eletricista","eq":"VL CDZ-027","otj":true,"nota":"(On the Job)(Atua de 09/09 á 17/09)","key":"Pedro Henrique"},{"nome":"Thomás Aurélio","funcao":"Eletricista","key":"Thomás Aurélio"}]},{"nome":"Projeto Flexibilidade","pessoas":[{"nome":"Éder Custódio","funcao":"Operador","eq":"JCB MT-01","key":"Éder Custódio"},{"nome":"Wesley Romualdo","funcao":"Eletro mecânico","eq":"VL CDZ-17","key":"Wesley Romualdo"},{"nome":"Glaycon Fernando","funcao":"Eletro mecânico","key":"Glaycon Fernando"}]},{"nome":"VL Logística","pessoas":[{"nome":"Hugo Vinícius","funcao":"Operador VL","otj":true,"nota":"(On the Job)","key":"Hugo Vinícius"}]},{"nome":"Equipagem BPF-PLANO","pessoas":[{"nome":"Deivisson Marcks","funcao":"Eletricista","eq":"VL CDZ-25","key":"Deivisson Marcks"},{"nome":"Douglas Patrick","funcao":"Auxiliar","eq":"VL CDZ-31","otj":true,"nota":"(On the Job)","key":"Douglas Patrick"}]},{"nome":"Equipagem BPF-CRO","pessoas":[{"nome":"Caio Viana","funcao":"Eletricista","otj":true,"nota":"(On the Job)","key":"Caio Viana"},{"nome":"Igor Cipriano","funcao":"Auxiliar","otj":true,"nota":"(On the Job)","key":"Igor Cipriano"}]},{"nome":"Equipagem Corretiva - 01","pessoas":[{"nome":"Augusto Franco","funcao":"Auxiliar","otj":true,"nota":"(On the job)","key":"Augusto Franco"}]},{"nome":"Equipagem Corretiva - 02","pessoas":[{"nome":"Alexandre Reis","funcao":"Auxiliar","key":"Alexandre Reis"}]},{"nome":"Manutenção Planejada","pessoas":[{"nome":"Lucas Saleme","funcao":"Eletricista","key":"Lucas Saleme"},{"nome":"Breno Abel","funcao":"Auxiliar","key":"Breno Abel"}]},{"nome":"Manutenção de Painéis","pessoas":[{"nome":"João Wellington","funcao":"Eletricista","key":"João Wellington"}]},{"nome":"Caldeiraria","pessoas":[{"nome":"Ricardo Rodrigues","funcao":"Operador","eq":"JCB MT CDZ-022","key":"Ricardo Rodrigues"},{"nome":"Warlley Serafim","funcao":"Soldador","key":"Warlley Serafim"},{"nome":"Anderson Ramos","funcao":"Soldador","otj":true,"nota":"(On the Job)","key":"Anderson Ramos"},{"nome":"Willer Aleme","funcao":"Auxiliar","eq":"VL CDZ-14","key":"Willer Aleme"},{"nome":"Weverton Johnny","funcao":"Auxiliar","key":"Weverton Johnny"},{"nome":"Italo Carrion","funcao":"Auxiliar","nota":"(Atua de 17/09 á 04/10)","key":"Italo Carrion"}]},{"nome":"Munck","pessoas":[{"nome":"Caique Phelype","funcao":"Auxiliar","key":"Caique Phelype"}]},{"nome":"Obras de Infraestrutura","pessoas":[{"nome":"Jeferson Henrique","funcao":"Operador de equipamentos","eq":"JCB MT CDZ-034","otj":true,"nota":"(On the Job - até o dia 17/09)","key":"Jeferson Henrique"}]},{"nome":"Alta Tensão","pessoas":[{"nome":"Narmillen Chanietto","funcao":"Técnico","key":"Narmillen Chanietto"},{"nome":"Rodrigo Silva","funcao":"Técnico","key":"Rodrigo Silva"},{"nome":"Gabriel Vinicius","funcao":"Eletricista","key":"Gabriel Vinicius"},{"nome":"Marco Aurélio","funcao":"Eletricista","eq":"VL CDZ-24","key":"Marco Aurélio"},{"nome":"Jeferson Braian","funcao":"Eletricista","eq":"VL CDZ-29","nota":"(Previsão de início 07/09)","key":"Jeferson Braian"},{"nome":"Luiz Gustavo","funcao":"Eletricista","eq":"VL CDZ-023","key":"Luiz Gustavo"}],"turnos":["T1"]},{"nome":"TST","pessoas":[{"nome":"Ana Paula","funcao":"Téc. de Seg.","key":"Ana Paula"}]},{"nome":"Apoio Operacional","pessoas":[{"nome":"Carlos Eduardo","funcao":"Eletricista","nota":"(Previsão de início 25/09 - Vai substituir o Pedro Henrique na Automação)","motivo":"Previsão de início 25/09 - Vai substituir o Pedro Henrique na Automação","pend":true,"key":"Carlos Eduardo"},{"nome":"Huitalon Vitorio","funcao":"Auxiliar","nota":"(Em mobilização)","motivo":"Em mobilização","pend":true,"key":"Huitalon Vitorio"}]}]},"B":{"encarregado":"Leonardo Coutinho","grupos":[{"nome":"Liderança","pessoas":[{"nome":"Leonardo Coutinho","funcao":"Encarregado","key":"Leonardo Coutinho"}]},{"nome":"Automação","pessoas":[{"nome":"Gabriel Melo","funcao":"Eletricista","eq":"VL CDZ-027","key":"Gabriel Melo"},{"nome":"Gilmar Rodrigues","funcao":"Eletricista","key":"Gilmar Rodrigues"}]},{"nome":"Projeto Flexibilidade","pessoas":[{"nome":"Arley Santos","funcao":"Operador","eq":"JCB MT-01","key":"Arley Santos"},{"nome":"João Vitor","funcao":"Eletro mecânico","eq":"VL CDZ-17","key":"João Vitor"},{"nome":"Luiz Fernando","funcao":"Eletro mecânico","key":"Luiz Fernando"}]},{"nome":"VL Logística","pessoas":[{"nome":"Ângelo Bruno","funcao":"Operador VL","nota":"(Previsão de início 15/09)","motivo":"Previsão de início 15/09","pend":true,"key":"Ângelo Bruno"}]},{"nome":"Equipagem BPF-PLANO","pessoas":[{"nome":"Jorge Neves","funcao":"Eletricista","eq":"VL CDZ-25","key":"Jorge Neves"},{"nome":"Charles Santos","funcao":"Auxiliar","eq":"VL CDZ-31","key":"Charles Santos"}]},{"nome":"Equipagem BPF-CRO","pessoas":[{"nome":"João Lucas","funcao":"Eletricista","key":"João Lucas"},{"nome":"Luiz Augusto","funcao":"Auxiliar","otj":true,"nota":"(On the Job)","key":"Luiz Augusto"}]},{"nome":"Equipagem Corretiva - 01","pessoas":[{"nome":"Fernando Custódio","funcao":"Auxiliar","otj":true,"nota":"(On the job)","key":"Fernando Custódio"}]},{"nome":"Equipagem Corretiva - 02","pessoas":[{"nome":"Philipe Augusto","funcao":"Auxiliar","otj":true,"nota":"(On the Job)","key":"Philipe Augusto"}]},{"nome":"Manutenção Planejada","pessoas":[{"nome":"Junio Afonso","funcao":"Eletricista","key":"Junio Afonso"},{"nome":"Dário Junior","funcao":"Auxiliar","key":"Dário Junior"}]},{"nome":"Manutenção de Painéis","pessoas":[{"nome":"Anthony Omar","funcao":"Eletricista","key":"Anthony Omar"}]},{"nome":"Caldeiraria","pessoas":[{"nome":"Frederico","funcao":"Operador","eq":"JCB MT CDZ-022","nota":"(Até 18/09)","key":"Frederico"},{"nome":"Brayan Dias","funcao":"Soldador","nota":"Férias de 03/09 á 02/10 - Sem Reposição","motivo":"Férias de 03/09 á 02/10 - Sem Reposição","pend":true,"key":"Brayan Dias"},{"nome":"Marcelo Maciel","funcao":"Soldador","otj":true,"key":"Marcelo Maciel"},{"nome":"Carlos Daniel","funcao":"Auxiliar","eq":"VL CDZ-14","otj":true,"nota":"(On the Job)","key":"Carlos Daniel"},{"nome":"Wesley Meyer","funcao":"Auxiliar","key":"Wesley Meyer"},{"nome":"Weverton Johnny","funcao":"Auxiliar","nota":"(Período de 09/09 á 02/10)","key":"Weverton Johnny"}]},{"nome":"Munck","pessoas":[{"nome":"Luciano Paulo","funcao":"Auxiliar","key":"Luciano Paulo"}]},{"nome":"Obras de Infraestrutura","pessoas":[{"nome":"Wanderson Celeste","funcao":"Operador de equipamentos","eq":"JCB MT CDZ-034","otj":true,"nota":"(On the Job - até o dia 18/09)","key":"Wanderson Celeste"}]},{"nome":"Alta Tensão","pessoas":[{"nome":"Narmillen Chanietto","funcao":"Técnico","key":"Narmillen Chanietto"},{"nome":"Rodrigo Silva","funcao":"Técnico","key":"Rodrigo Silva"},{"nome":"Gabriel Vinicius","funcao":"Eletricista","key":"Gabriel Vinicius"},{"nome":"Marco Aurélio","funcao":"Eletricista","eq":"VL CDZ-24","key":"Marco Aurélio"},{"nome":"Jeferson Braian","funcao":"Eletricista","eq":"VL CDZ-29","nota":"(Previsão de início 07/09)","key":"Jeferson Braian"},{"nome":"Luiz Gustavo","funcao":"Eletricista","eq":"VL CDZ-023","key":"Luiz Gustavo"}],"turnos":["T1"]},{"nome":"TST","pessoas":[{"nome":"","funcao":"Téc. de Seg.","nota":"(Em contratação)","motivo":"Em contratação","pend":true,"key":"Pendente #1"}]},{"nome":"Apoio Operacional","pessoas":[{"nome":"Wander Lúcio","funcao":"Eletricista","nota":"(Previsão de início 23/09)","motivo":"Previsão de início 23/09","pend":true,"key":"Wander Lúcio"},{"nome":"","funcao":"Auxiliar","motivo":"A contratar","pend":true,"key":"Pendente #2"}]}]},"C":{"encarregado":"Weviley Borges","grupos":[{"nome":"Liderança","pessoas":[{"nome":"Weviley Borges","funcao":"Encarregado","key":"Weviley Borges"}]},{"nome":"Automação","pessoas":[{"nome":"Raquel Lino","funcao":"Eletricista","eq":"VL CDZ-027","key":"Raquel Lino"},{"nome":"Wesley Monteiro","funcao":"Eletricista","key":"Wesley Monteiro"}]},{"nome":"Projeto Flexibilidade","pessoas":[{"nome":"Josevaldo Silva","funcao":"Operador","eq":"JCB MT-01","key":"Josevaldo Silva"},{"nome":"Carlos Junior","funcao":"Eletro mecânico","eq":"VL CDZ-17","key":"Carlos Junior"},{"nome":"Diogo da Mota","funcao":"Eletro mecânico","key":"Diogo da Mota"}]},{"nome":"VL Logística","pessoas":[{"nome":"Alexandre Vitoriano","funcao":"Operador VL","nota":"(Previsão de início 19/09)","motivo":"Previsão de início 19/09","pend":true,"key":"Alexandre Vitoriano"}]},{"nome":"Equipagem BPF-PLANO","pessoas":[{"nome":"Renan Henrique","funcao":"Eletricista","key":"Renan Henrique"},{"nome":"Alexandre Vitoriano","funcao":"Auxiliar","eq":"VL CDZ-31","nota":"(até 14/09)","key":"Alexandre Vitoriano"}]},{"nome":"Equipagem BPF-CRO","pessoas":[{"nome":"Washington Santos","funcao":"Eletricista","key":"Washington Santos"},{"nome":"Matheus Vitor","funcao":"Auxiliar","otj":true,"nota":"(On the job)","key":"Matheus Vitor"}]},{"nome":"Equipagem Corretiva - 01","pessoas":[{"nome":"João Vitor Santos","funcao":"Auxiliar","otj":true,"nota":"(On the job)","key":"João Vitor Santos"}]},{"nome":"Equipagem Corretiva - 02","pessoas":[{"nome":"Cauã Phillipe","funcao":"Auxiliar","otj":true,"nota":"(On the job)","key":"Cauã Phillipe"}]},{"nome":"Manutenção Planejada","pessoas":[{"nome":"Gabriel Santiago","funcao":"Eletricista","key":"Gabriel Santiago"},{"nome":"Háviner Sena","funcao":"Auxiliar","otj":true,"nota":"(On the job)","key":"Háviner Sena"}]},{"nome":"Manutenção de Painéis","pessoas":[{"nome":"Fabrício Resende","funcao":"Eletricista","key":"Fabrício Resende"}]},{"nome":"Caldeiraria","pessoas":[{"nome":"Cleber Soares","funcao":"Operador","eq":"JCB MT CDZ-022","nota":"(Até 14/09)","key":"Cleber Soares"},{"nome":"Aldivan Barbosa","funcao":"Soldador","key":"Aldivan Barbosa"},{"nome":"Adrian Muller","funcao":"Soldador","key":"Adrian Muller"},{"nome":"André Marcos","funcao":"Auxiliar","eq":"VL CDZ-14","otj":true,"nota":"(On the Job)","key":"André Marcos"},{"nome":"Yago Chilaverth","funcao":"Auxiliar","otj":true,"nota":"(On the Job)","key":"Yago Chilaverth"}]},{"nome":"Munck","pessoas":[{"nome":"Welington Dias","funcao":"Auxiliar","key":"Welington Dias"}]},{"nome":"Limpeza","pessoas":[{"nome":"Wellington Santos","funcao":"Auxiliar","key":"Wellington Santos"}]},{"nome":"Obras de Infraestrutura","pessoas":[{"nome":"Neymar Silva","funcao":"Operador de equipamentos","eq":"JCB MT CDZ-034","otj":true,"nota":"(On the Job - até o dia 14/09)","key":"Neymar Silva"}]},{"nome":"Alta Tensão","pessoas":[{"nome":"Wendrell Leone","funcao":"Técnico","key":"Wendrell Leone"},{"nome":"Lucas Otávio","funcao":"Eletricista","key":"Lucas Otávio"},{"nome":"Riclei Marques","funcao":"Eletricista","eq":"VL CDZ-023","key":"Riclei Marques"},{"nome":"Gabriel Teixeira","funcao":"Eletricista","eq":"VL CDZ-24","key":"Gabriel Teixeira"},{"nome":"Denis Brandão","funcao":"Eletricista","eq":"VL CDZ-29","key":"Denis Brandão"}],"turnos":["T1"]},{"nome":"TST","pessoas":[{"nome":"","funcao":"Téc. de Seg.","nota":"(Previsão de início 28/09)","motivo":"Previsão de início 28/09","pend":true,"key":"Pendente #1"}]},{"nome":"Apoio Operacional","pessoas":[{"nome":"Presley Rosário","funcao":"Eletricista","nota":"(Afastado)","motivo":"Afastado","pend":true,"key":"Presley Rosário"},{"nome":"Robert Gonçalves","funcao":"Auxiliar","otj":true,"nota":"(On the Job - A partir de 19/09 condutor na equipagem mecânica)","key":"Robert Gonçalves"}]}]},"D":{"encarregado":"Anderson Aparecido","grupos":[{"nome":"Liderança","pessoas":[{"nome":"Anderson Aparecido","funcao":"Encarregado","key":"Anderson Aparecido"}]},{"nome":"Automação","pessoas":[{"nome":"Rodrigo Antônio","funcao":"Eletricista","eq":"VL CDZ-027","key":"Rodrigo Antônio"},{"nome":"Voltaire Payoutte","funcao":"Eletricista","otj":true,"nota":"(On the job)","key":"Voltaire Payoutte"}]},{"nome":"Projeto Flexibilidade","pessoas":[{"nome":"Lourenço Junior","funcao":"Operador","eq":"JCB MT-01","key":"Lourenço Junior"},{"nome":"Wander Lúcio","funcao":"Eletro mecânico","eq":"VL CDZ-17","nota":"(Ferista - até 16/09)","key":"Wander Lúcio"},{"nome":"Ricardo Guerra","funcao":"Eletro mecânico","key":"Ricardo Guerra"}]},{"nome":"VL Logística","pessoas":[{"nome":"Gabriel Augusto","funcao":"Operador VL","eq":"VL CDZ-25","otj":true,"nota":"(On the Job)","key":"Gabriel Augusto"}]},{"nome":"Equipagem BPF-PLANO","pessoas":[{"nome":"Kevin Costner","funcao":"Eletricista","key":"Kevin Costner"},{"nome":"José Pereira","funcao":"Auxiliar","eq":"VL CDZ-31","key":"José Pereira"}]},{"nome":"Equipagem BPF-CRO","pessoas":[{"nome":"Junio Santos","funcao":"Eletricista","key":"Junio Santos"},{"nome":"Nathan Gustavo","funcao":"Auxiliar","otj":true,"nota":"(On the job)","key":"Nathan Gustavo"}]},{"nome":"Equipagem Corretiva - 01","pessoas":[{"nome":"Romeu Henrique","funcao":"Auxiliar","otj":true,"nota":"(On the job)","key":"Romeu Henrique"}]},{"nome":"Equipagem Corretiva - 02","pessoas":[{"nome":"Gustavo Henrique","funcao":"Auxiliar","otj":true,"nota":"(On the job)","key":"Gustavo Henrique"}]},{"nome":"Manutenção Planejada","pessoas":[{"nome":"Igor Henrique","funcao":"Eletricista","key":"Igor Henrique"},{"nome":"Wilson Junior","funcao":"Auxiliar","otj":true,"nota":"(On the job)","key":"Wilson Junior"}]},{"nome":"Manutenção de Painéis","pessoas":[{"nome":"Paulo Brandão","funcao":"Eletricista","key":"Paulo Brandão"}]},{"nome":"Caldeiraria","pessoas":[{"nome":"Deivy Marcos","funcao":"Operador","eq":"JCB MT CDZ-022","key":"Deivy Marcos"},{"nome":"Pedro de Deus","funcao":"Soldador","key":"Pedro de Deus"},{"nome":"Samuel Souza","funcao":"Soldador","eq":"VL CDZ-14","key":"Samuel Souza"},{"nome":"Pedro Cassimiro","funcao":"Auxiliar","key":"Pedro Cassimiro"},{"nome":"Thyago Augusto","funcao":"Auxiliar","key":"Thyago Augusto"}]},{"nome":"Munck","pessoas":[{"nome":"Junior Alex","funcao":"Auxiliar","nota":"(Retorno de férias 13/09)","key":"Junior Alex"}]},{"nome":"Limpeza","pessoas":[{"nome":"Michell Lopes","funcao":"Auxiliar","key":"Michell Lopes"}]},{"nome":"Obras de Infraestrutura","pessoas":[{"nome":"Leonardo Andrade","funcao":"Operador de equipamentos","eq":"JCB MT CDZ-034","otj":true,"nota":"(On the Job)","key":"Leonardo Andrade"}]},{"nome":"Alta Tensão","pessoas":[{"nome":"Wendrell Leone","funcao":"Técnico","key":"Wendrell Leone"},{"nome":"Lucas Otávio","funcao":"Eletricista","key":"Lucas Otávio"},{"nome":"Riclei Marques","funcao":"Eletricista","eq":"VL CDZ-023","key":"Riclei Marques"},{"nome":"Gabriel Teixeira","funcao":"Eletricista","eq":"VL CDZ-24","key":"Gabriel Teixeira"},{"nome":"Denis Brandão","funcao":"Eletricista","eq":"VL CDZ-29","key":"Denis Brandão"}],"turnos":["T1"]},{"nome":"TST","pessoas":[{"nome":"","funcao":"Téc. de Seg.","nota":"(Previsão de início 29/09)","motivo":"Previsão de início 29/09","pend":true,"key":"Pendente #1"}]},{"nome":"Apoio Operacional","pessoas":[{"nome":"Guilherme Lima","funcao":"Eletricista","key":"Guilherme Lima"},{"nome":"Italo Carrion","funcao":"Auxiliar","nota":"(Atua de 13 /09 á 14/09)","motivo":"Atua de 13 /09 á 14/09","pend":true,"key":"Italo Carrion"}]}]}}}</script>
 <script>
 (function(){
   "use strict";
@@ -270,7 +274,7 @@
     no:['Falta injustificada','Atestado','Falta justificada'],
     mid:['Férias','Folga','Treinamento','Afastamento','Remanejado para outra letra','Remanejado para outra equipe']
   };
-  var estado = {letra:'A', data:'', turno:'T1', formato:'completo', marcas:{}, obsGerais:'', filtro:null};
+  var estado = {letra:'A', data:'', turno:'T1', formato:'completo', marcas:{}, obsGerais:'', filtro:null, dataManual:false};
 
   /* Equipes com regra própria de turno/origem.
      Alta Tensão atua somente no T1: a equipe da letra B cobre o T1 das letras A e B,
@@ -278,7 +282,21 @@
   var REGRAS = {
     'Alta Tensão': { turnos:['T1'], origem:{A:'B', B:'B', C:'C', D:'C'} }
   };
+  function reinterpretarNotas(b){
+    LETRAS.forEach(function(L){
+      ((b.letras[L]||{}).grupos||[]).forEach(function(g){
+        g.pessoas.forEach(function(p){
+          if(!p.nota) return;
+          ['inicio','fim','ausDe','ausAte','motivoInicio'].forEach(function(k){ delete p[k]; });
+          var rd=regrasDeData(p.nota);
+          Object.keys(rd).forEach(function(k){ p[k]=rd[k]; });
+        });
+      });
+    });
+    return b;
+  }
   function aplicarRegras(b){
+    reinterpretarNotas(b);
     Object.keys(REGRAS).forEach(function(nome){
       var reg=REGRAS[nome];
       LETRAS.forEach(function(L){
@@ -300,6 +318,16 @@
 
   var $ = function(id){ return document.getElementById(id); };
   function hoje(){ var d=new Date(); d.setMinutes(d.getMinutes()-d.getTimezoneOffset()); return d.toISOString().slice(0,10); }
+  function ontem(){ var d=new Date(); d.setDate(d.getDate()-1); d.setMinutes(d.getMinutes()-d.getTimezoneOffset()); return d.toISOString().slice(0,10); }
+  /* No T2 a jornada começa no dia anterior, então a data padrão recua um dia. */
+  function dataPadrao(){ return estado.turno==='T2' ? ontem() : hoje(); }
+  function atualizarDica(){
+    var el=$('dicaTurno');
+    if(estado.turno==='T2'){
+      el.textContent='Turno T2: informe a data em que a jornada começou, ou seja, o dia anterior.';
+      el.classList.add('show');
+    } else el.classList.remove('show');
+  }
   function dataBR(iso){ if(!iso) return ''; var p=iso.split('-'); return p[2]+'/'+p[1]+'/'+p[0]; }
   function diaSemana(iso){
     if(!iso) return '';
@@ -309,13 +337,28 @@
   function chaveArmazenamento(){ return 'informe-equipe:'+estado.letra+':'+estado.data+':'+estado.turno; }
   function idPessoa(g,p){ return g+'|'+p; }
   function chave(p){ return p.key || p.nome; }
-  function inicioFuturo(p){
-    if(!p.inicio || !estado.data) return false;
-    var d=p.inicio.split('/');
-    var alvo=new Date(Number(estado.data.slice(0,4)), Number(d[1])-1, Number(d[0]));
-    return alvo.getTime() > new Date(estado.data+'T00:00:00').getTime();
+  function numDM(s){ var a=(s||'').split('/'); return Number(a[1])*100+Number(a[0]); }
+  function numData(){ return Number(estado.data.slice(5,7))*100+Number(estado.data.slice(8,10)); }
+  function dentroDaJanela(d,ini,fim){ return ini<=fim ? (d>=ini && d<=fim) : (d>=ini || d<=fim); }
+  /* Retorna '' quando o colaborador está atuando na data do informe,
+     ou o motivo do afastamento: 'aus', 'antes' ou 'depois'. */
+  function foraDeAtuacao(p){
+    if(!estado.data) return '';
+    var d=numData();
+    if(p.ausDe && p.ausAte && dentroDaJanela(d,numDM(p.ausDe),numDM(p.ausAte))) return 'aus';
+    if(p.inicio && p.fim) return dentroDaJanela(d,numDM(p.inicio),numDM(p.fim)) ? '' : (d<numDM(p.inicio)?'antes':'depois');
+    if(p.inicio && d<numDM(p.inicio)) return 'antes';
+    if(p.fim && d>numDM(p.fim)) return 'depois';
+    return '';
   }
-  function ehPendente(p){ return !!p.pend || inicioFuturo(p); }
+  function ehPendente(p){ return !!p.pend || !!foraDeAtuacao(p); }
+  function motivoDe(p){
+    var f=foraDeAtuacao(p);
+    if(f==='aus') return 'Ausente até '+p.ausAte;
+    if(f==='antes') return p.motivoInicio || p.motivo || ('Início previsto em '+p.inicio);
+    if(f==='depois') return 'Fora do período, atuou até '+p.fim;
+    return p.motivo || 'Posição em aberto';
+  }
 
   /* ---------- Equipes incluídas no informe ---------- */
   function gruposDe(L){
@@ -495,7 +538,7 @@
   function cardPendente(p){
     var art=document.createElement('article');
     art.className='pessoa pend';
-    var meta=(p.funcao||'')+'<span class="tag pend">'+(p.motivo||'Posição em aberto')+'</span>';
+    var meta=(p.funcao||'')+'<span class="tag pend">'+motivoDe(p)+'</span>';
     art.innerHTML='<div class="p-nome">Pendente</div><div class="p-meta">'+meta+'</div>'+
       (p.nome?'<div class="p-quem">Colaborador previsto: <b>'+p.nome+'</b></div>':'');
     return art;
@@ -589,7 +632,7 @@
   }
 
   function linhaPendente(p){
-    var s='\u26AA Pendente \u2014 '+(p.motivo||'Posição em aberto');
+    var s='\u26AA Pendente \u2014 '+motivoDe(p);
     if(p.funcao) s+=' \u00B7 '+p.funcao;
     if(p.nome) s+=' \u00B7 '+p.nome;
     return s;
@@ -629,6 +672,48 @@
     if(low.indexOf('jcbmt-')===0) return 'JCB '+low.slice(3).toUpperCase();
     return e.toUpperCase();
   }
+  function dm(a,b){ return ('0'+a).slice(-2)+'/'+('0'+b).slice(-2); }
+
+  /* A observação do painel pode ter vários trechos entre parênteses.
+     Trechos de "On the Job" falam do treinamento, não da escala, então
+     as datas deles são ignoradas. */
+  function segmentosDeNota(nota){
+    var s=String(nota||''), out=[], re=/\(([^)]*)\)/g, m, achou=false;
+    while((m=re.exec(s))){ achou=true; out.push(m[1]); }
+    if(!achou && s.trim()) out.push(s);
+    return out;
+  }
+  var D='(\\d{1,2})\\s*\\/\\s*(\\d{1,2})';      /* dia/mês, tolera espaços */
+  var A='\\s*(?:a|\u00E1|\u00E0|at[\u00E9e])\\s*';   /* "a", "á", "à", "até" */
+  function rx(corpo){ return new RegExp(corpo,'i'); }
+  function lerDatas(seg){
+    var r={}, m;
+    if((m=seg.match(rx('(?:f[\u00E9e]rias|ausente|afastad[oa]|atestado|licen[\u00E7c]a)[^0-9]{0,16}'+D+A+D)))){
+      r.ausDe=dm(m[1],m[2]); r.ausAte=dm(m[3],m[4]); return r;
+    }
+    if((m=seg.match(rx('(?:atua|per[\u00EDi]odo|escalad[oa]|cobertura)[^0-9]{0,16}'+D+A+D)))
+    || (m=seg.match(rx(D+A+D)))){
+      r.inicio=dm(m[1],m[2]); r.fim=dm(m[3],m[4]);
+      r.motivoInicio='Escalado a partir de '+r.inicio;
+      return r;
+    }
+    if((m=seg.match(rx('retorn[oa](?:\\s+de\\s+f[\u00E9e]rias)?[^0-9]{0,16}'+D)))){
+      r.inicio=dm(m[1],m[2]); r.motivoInicio='Retorno de f\u00E9rias em '+r.inicio;
+    } else if((m=seg.match(rx('(?:previs[\u00E3a]o de in[\u00EDi]cio|a partir de|inicia em|in[\u00EDi]cio em)[^0-9]{0,16}'+D)))){
+      r.inicio=dm(m[1],m[2]); r.motivoInicio='Em mobiliza\u00E7\u00E3o, previs\u00E3o de in\u00EDcio '+r.inicio;
+    }
+    if((m=seg.match(rx('at[\u00E9e](?:\\s+o\\s+dia)?[^0-9]{0,12}'+D)))) r.fim=dm(m[1],m[2]);
+    return r;
+  }
+  function regrasDeData(nota){
+    var r={};
+    segmentosDeNota(nota).forEach(function(seg){
+      if(/on\s*the\s*job/i.test(seg)) return;
+      var rr=lerDatas(seg);
+      Object.keys(rr).forEach(function(k){ if(!r[k]) r[k]=rr[k]; });
+    });
+    return r;
+  }
   function capitalizar(s){
     s=(s||'').trim(); if(!s) return '';
     if(s===s.toUpperCase()) s=s.toLowerCase();
@@ -650,19 +735,18 @@
           var place=PLACE.indexOf(nome.toLowerCase())>=0;
           var pend=(c.status===1)||place;
           var limpa=nota.replace(/[()]/g,' ').replace(/\s+/g,' ').trim();
-          var mi=nota.match(/(?:previs[ãa]o de in[íi]cio|a partir de|inicia em)\D{0,8}(\d{1,2})\/(\d{1,2})/i);
-          var inicio=mi?(('0'+mi[1]).slice(-2)+'/'+('0'+mi[2]).slice(-2)):'';
+          var rd=regrasDeData(nota);
           var pes={nome:place?'':nome, funcao:capitalizar(c.funcao)};
           if(!pend){
             var eq=normalizarEquipamento(c.equipamento); if(eq) pes.eq=eq;
             if(c.status===2 || nota.toLowerCase().indexOf('on the job')>=0) pes.otj=true;
           }
-          if(inicio) pes.inicio=inicio;
-          if(pend||inicio){
-            pes.motivo = inicio ? ('Em mobilização, previsão de início '+inicio)
-                       : (limpa ? capitalizar(limpa) : (place ? capitalizar(nome) : 'Posição em aberto'));
+          if(nota) pes.nota=nota;
+          ['inicio','fim','ausDe','ausAte','motivoInicio'].forEach(function(k){ if(rd[k]) pes[k]=rd[k]; });
+          if(pend){
+            pes.pend=true;
+            pes.motivo = limpa ? capitalizar(limpa) : (place ? capitalizar(nome) : 'Posição em aberto');
           }
-          if(pend) pes.pend=true;
           pes.key = pes.nome || ('Pendente #'+n);
           ps.push(pes);
         });
@@ -718,18 +802,25 @@
   /* ---------- Ligações ---------- */
   function iniciar(){
     aplicarRegras(BASE);
-    estado.data=hoje();
+    estado.data=dataPadrao();
     $('data').value=estado.data;
+    atualizarDica();
     carregarFiltro(); carregar(); montarLetras(); montarFiltro(); montarLista();
 
     $('eqTodas').onclick=function(){ estado.filtro=null; salvarFiltro(); montarFiltro(); montarLista(); };
     $('eqNenhuma').onclick=function(){ estado.filtro=[]; salvarFiltro(); montarFiltro(); montarLista(); };
 
-    $('data').onchange=function(){ estado.data=$('data').value||hoje(); carregar(); montarLetras(); montarLista(); };
+    $('data').onchange=function(){
+      estado.data=$('data').value||dataPadrao();
+      estado.dataManual=true;
+      carregar(); montarLetras(); montarLista();
+    };
     Array.prototype.forEach.call($('turno').children,function(b){
       b.onclick=function(){
         estado.turno=b.dataset.t;
         Array.prototype.forEach.call($('turno').children,function(x){ x.setAttribute('aria-pressed', String(x===b)); });
+        if(!estado.dataManual){ estado.data=dataPadrao(); $('data').value=estado.data; }
+        atualizarDica();
         carregarFiltro(); carregar(); montarLetras(); montarFiltro(); montarLista();
       };
     });
@@ -766,5 +857,4 @@
   iniciar();
 })();
 </script>
-
 </body></html>
