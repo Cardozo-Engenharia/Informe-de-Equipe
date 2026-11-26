@@ -82,6 +82,7 @@
   .chip.ok{background:var(--green-soft);border-color:#BFE6CC;} .chip.ok b{color:var(--green);}
   .chip.no{background:var(--red-soft);border-color:#F3C9C9;} .chip.no b{color:var(--red);}
   .chip.mid{background:var(--amber-soft);border-color:#F2DCB4;} .chip.mid b{color:var(--amber);}
+  .chip.apoio{background:#EDEBF9;border-color:#D7D2F2;} .chip.apoio b{color:#5B4BC4;}
   .chip.pend{background:var(--navy-900);border-color:var(--navy-900);color:#B9C6DE;}
   .chip.pend b{color:#fff;}
 
@@ -208,12 +209,12 @@
       <div><span class="lbl">Data</span><input type="date" id="data"></div>
       <div><span class="lbl">Turno</span>
         <div class="seg" id="turno">
-          <button type="button" data-t="T1" aria-pressed="false">T1</button>
-          <button type="button" data-t="T2" aria-pressed="true">T2</button>
+          <button type="button" data-t="T1" aria-pressed="true">T1</button>
+          <button type="button" data-t="T2" aria-pressed="false">T2</button>
         </div>
       </div>
     </div>
-    <p class="dica show" id="dicaTurno">Turno T2: informe a data em que a jornada começou, ou seja, o dia anterior.</p>
+    <p class="dica" id="dicaTurno"></p>
     <div class="enc">Encarregado: <b id="encNome">—</b></div>
     <details class="equipes" id="equipesBox">
       <summary><span class="lbl">Equipes do informe</span><b id="eqResumo">Todas</b></summary>
@@ -585,11 +586,13 @@
     return out;
   }
   function contar(){
-    var c={total:0,ok:0,no:0,mid:0,pend:0,pendentes:0};
+    var c={total:0,ok:0,no:0,mid:0,pend:0,pendentes:0,apoio:0};
     pessoas().forEach(function(x){
       var st=(estado.marcas[x.id]||{}).st;
       if(!st) c.pend++;
-      if(!x.conta) return;
+      /* Fora do efetivo (Apoio Operacional e ferista de apoio): quem atuou
+         entra no indicador de apoio, não na contagem da equipe. */
+      if(!x.conta){ if(st==='ok') c.apoio++; return; }
       c.total++;
       if(st==='ok') c.ok++; else if(st==='no') c.no++; else if(st==='mid') c.mid++;
     });
@@ -604,6 +607,7 @@
              '<div class="chip no">Faltou <b>'+c.no+'</b></div>'+
              '<div class="chip mid">Outros <b>'+c.mid+'</b></div>';
     if(c.pendentes>0) html+='<div class="chip">Pendente <b>'+c.pendentes+'</b></div>';
+    if(c.apoio>0) html+='<div class="chip apoio">Apoio <b>'+c.apoio+'</b></div>';
     if(c.pend>0) html+='<div class="chip pend">Sem marcar <b>'+c.pend+'</b></div>';
     $('summary').innerHTML=html;
     $('previa').textContent=montarTexto();
@@ -623,7 +627,8 @@
     if(enc && (!parcial || temLideranca)) L.push('Encarregado: '+enc);
     L.push('');
     var pends=listaPendentes();
-    L.push('Efetivo *'+c.total+'* \u00B7 '+EMOJI.ok+' Trabalhou *'+c.ok+'* \u00B7 '+EMOJI.no+' Faltou *'+c.no+'*'+(c.mid?' \u00B7 '+EMOJI.mid+' Outros *'+c.mid+'*':'')+(c.pendentes?' \u00B7 \u26AA Pendente *'+c.pendentes+'*':''));
+    L.push('Efetivo *'+c.total+'* \u00B7 '+EMOJI.ok+' Trabalhou *'+c.ok+'* \u00B7 '+EMOJI.no+' Faltou *'+c.no+'*'+(c.mid?' \u00B7 '+EMOJI.mid+' Outros *'+c.mid+'*':'')+(c.pendentes?' \u00B7 \u26AA Pendente *'+c.pendentes+'*':'')
+      +(c.apoio?' \u00B7 \u{1F477} Apoio *'+c.apoio+'*':''));
 
     if(estado.formato==='completo'){
       vis.forEach(function(g){
